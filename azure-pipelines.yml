@@ -3,7 +3,7 @@ pool:
   vmImage: 'ubuntu-16.04'
 
 variables:
-  IMAGE: 'docker.io/pywr/pywr-ci-example'
+  image: 'docker.io/pywr/pywr-ci-example'
 
 stages:
 - stage: Test
@@ -32,13 +32,15 @@ stages:
         mypy --version
         mypy app
 
-
 - stage: BuildImage
   jobs:
-    - job: Build
-      container: 'tomkukral/buildah'
-      steps:
-        - script: |
-            podman version
-            buildah version
-            podman build -t $IMAGE .
+  - job: Build
+    displayName: Build job
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(image)
+        containerRegistry: $(dockerHub)
+
