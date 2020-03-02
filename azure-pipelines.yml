@@ -2,8 +2,10 @@
 pool:
   vmImage: 'ubuntu-16.04'
 
-stages:
+variables:
+  IMAGE: 'docker.io/pywr/pywr-ci-example'
 
+stages:
 - stage: Test
   jobs:
   - job: Linting
@@ -30,3 +32,13 @@ stages:
         mypy --version
         mypy app
 
+
+- stage: BuildImage
+  jobs:
+    - job: Build
+      container: 'tomkukral/buildah'
+      steps:
+        - script: |
+            podman version
+            buildah version
+            podman build -t $IMAGE .
