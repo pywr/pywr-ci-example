@@ -3,19 +3,6 @@ pool:
   vmImage: 'ubuntu-16.04'
 
 stages:
-- stage: Dependencies
-  jobs:
-  - job: Dependices
-    container: 'python:3.7-slim-stretch'
-    steps:
-    - script: |
-        export PATH=$PATH:~/.local/bin
-        pip3 install pipenv
-        python3 -m venv venv
-        source venv/bin/activate
-        pipenv install --dev --deploy
-    - publish: venv/
-      artifact: VirtualEnv
 
 - stage: Test
   jobs:
@@ -25,7 +12,11 @@ stages:
     - download: current
       artifact: VirtualEnv
     - script: |
+        export PATH=$PATH:~/.local/bin
+        pip3 install pipenv
+        python3 -m venv venv
         source venv/bin/activate
+        pipenv install --dev --deploy
         flake8 --version
         flake8 app
 
@@ -35,7 +26,11 @@ stages:
     - download: current
       artifact: VirtualEnv
     - script: |
+        export PATH=$PATH:~/.local/bin
+        pip3 install pipenv
+        python3 -m venv venv
         source venv/bin/activate
+        pipenv install --dev --deploy
         mypy --version
         mypy app
 
