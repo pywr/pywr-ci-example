@@ -42,4 +42,4 @@ stages:
       inputs:
         command: buildAndPush
         repository: $(image)
-        containerRegistry: $(dockerHub)
+        containerRegistry: 'dockerHub'
