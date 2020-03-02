@@ -9,8 +9,6 @@ stages:
   - job: Linting
     container: 'python:3.7-slim-stretch'
     steps:
-    - download: current
-      artifact: VirtualEnv
     - script: |
         export PATH=$PATH:~/.local/bin
         pip3 install pipenv
@@ -23,8 +21,6 @@ stages:
   - job: Mypy
     container: 'python:3.7-slim-stretch'
     steps:
-    - download: current
-      artifact: VirtualEnv
     - script: |
         export PATH=$PATH:~/.local/bin
         pip3 install pipenv
