@@ -11,6 +11,7 @@ flake8 = "*"
 pywr = "*"
 click = "*"
 azure-storage-blob = "*"
+setuptools-scm = "*"
 
 [requires]
 python_version = "3.8"

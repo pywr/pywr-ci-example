@@ -4,11 +4,13 @@ from pywr.model import Model
 from pywr.recorders import TablesRecorder
 from pywr.recorders.progress import ProgressRecorder
 from azure.storage.blob import BlobServiceClient
+from setuptools_scm import get_version
 import click
 import os
 import logging
 logger = logging.getLogger(__name__)
 
+VERSION = get_version(root='..', relative_to=__file__)
 MODEL_FILENAME = 'model/thames.json'
 OUT_DIR = 'outputs/'
 DATA_DIR = 'data/'
@@ -22,6 +24,7 @@ def cli():
 @cli.command()
 def historic_run():
     """Run the model."""
+    logger.info(f'Version: {VERSION}')
     logger.info('Initialising cloud storage client ...')
     client = init_azure_storage()
     download_hydrology(client)
