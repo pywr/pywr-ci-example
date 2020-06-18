@@ -42,6 +42,8 @@ stages:
         source venv/bin/activate
         pipenv install --dev --deploy
         python app/thames.py historic-run
+      env:
+        AZURE_BLOB_CONNECT_STR: $(AZURE_BLOB_CONNECT_STR) # Map secret variable
 
 - stage: BuildImage
   jobs:
