@@ -44,7 +44,6 @@ stages:
     container: 'python:3.8'
     steps:
     - script: |
-        apt-get update && apt-get install git -y
         export PATH=$PATH:~/.local/bin
         pip3 install pipenv
         python3 -m venv venv
