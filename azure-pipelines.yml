@@ -9,7 +9,7 @@ stages:
 - stage: Test
   jobs:
   - job: Linting
-    container: 'python:3.7-slim-stretch'
+    container: 'python:3.8-slim'
     steps:
     - script: |
         export PATH=$PATH:~/.local/bin
@@ -21,7 +21,7 @@ stages:
         flake8 app
 
   - job: Mypy
-    container: 'python:3.7-slim-stretch'
+    container: 'python:3.8-slim'
     steps:
     - script: |
         export PATH=$PATH:~/.local/bin
@@ -31,6 +31,21 @@ stages:
         pipenv install --dev --deploy
         mypy --version
         mypy app
+
+  - job: Run
+    container: 'python:3.8'
+    steps:
+    - script: |
+        apt-get update && apt-get install git -y
+        export PATH=$PATH:~/.local/bin
+        pip3 install pipenv
+        python3 -m venv venv
+        source venv/bin/activate
+        pipenv install --dev --deploy
+        git describe
+        python app/thames.py historic-run
+      env:
+        AZURE_BLOB_CONNECT_STR: $(AZURE_BLOB_CONNECT_STR) # Map secret variable
 
 - stage: BuildImage
   jobs:
