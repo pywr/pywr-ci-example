@@ -33,7 +33,7 @@ stages:
         mypy app
 
   - job: Run
-    container: 'python:3.8-slim'
+    container: 'python:3.8'
     steps:
     - script: |
         apt-get update && apt-get install git -y
