@@ -41,6 +41,10 @@ def historic_run():
     # Run the model
     stats = model.run()
     logger.info(stats)
+    # Upload the results
+    logger.info('Uploading outputs ...')
+    upload_outputs(client)
+    # Print stats
     stats_df = stats.to_dataframe()
     logger.info(stats_df)
 
@@ -60,6 +64,23 @@ def download_hydrology(blob_service_client: BlobServiceClient):
     logger.info(f'Downloading hydrology data from:\n  "{blob_path}"\nto:\n  "{download_file_path}"')
     with open(download_file_path, "wb") as download_file:
         download_file.write(blob_client.download_blob().readall())
+
+
+def upload_outputs(blob_service_client: BlobServiceClient):
+    """Upload the contents of the output folder."""
+
+    for fn in os.listdir(OUT_DIR):
+        local_path = os.path.join(OUT_DIR, fn)
+        if os.path.isdir(local_path):
+            continue  # Skip sub-directories
+
+        blob_path = f'pywr-outputs/ref/{VERSION}/raw/{fn}'
+        blob_client = blob_service_client.get_blob_client(container='data', blob=blob_path)
+
+        logger.info(f'Uploading output data from:\n  "{local_path}"\nto:\n  "{blob_path}"')
+        # Upload the created file
+        with open(local_path, "rb") as data:
+            blob_client.upload_blob(data)
 
 
 def init_azure_storage() -> BlobServiceClient:
