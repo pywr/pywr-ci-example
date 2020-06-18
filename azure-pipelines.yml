@@ -41,6 +41,7 @@ stages:
         python3 -m venv venv
         source venv/bin/activate
         pipenv install --dev --deploy
+        git describe
         python app/thames.py historic-run
       env:
         AZURE_BLOB_CONNECT_STR: $(AZURE_BLOB_CONNECT_STR) # Map secret variable
