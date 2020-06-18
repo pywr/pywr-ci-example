@@ -3,7 +3,7 @@
 from pywr.model import Model
 from pywr.recorders import TablesRecorder
 from pywr.recorders.progress import ProgressRecorder
-from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
+from azure.storage.blob import BlobServiceClient
 import click
 import os
 import logging
