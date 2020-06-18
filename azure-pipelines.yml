@@ -5,6 +5,14 @@ pool:
 variables:
   image: 'docker.io/pywr/pywr-ci-example'
 
+trigger:
+  branches:
+    include:
+    - '*'
+  tags:
+    include:
+    - v*
+
 stages:
 - stage: Test
   jobs:
